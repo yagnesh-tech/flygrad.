@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Part-Time Jobs - FlyGrad</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background: linear-gradient(-45deg, #a1c4fd, #c2e9fb, #fbc2eb, #fcb69f, #f9ea8f, #b5fffc);
+      background-size: 400% 400%;
+      animation: vibrantBG 18s ease-in-out infinite;
+      min-height: 100vh;
+    }
+    @keyframes vibrantBG {
+      0% {background-position: 0% 50%;}
+      25% {background-position: 50% 100%;}
+      50% {background-position: 100% 50%;}
+      75% {background-position: 50% 0%;}
+      100% {background-position: 0% 50%;}
+    }
+    .glass-card {
+      background: rgba(255,255,255,0.25);
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.18);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .glass-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 16px 40px 0 rgba(31,38,135,0.37);
+    }
+    .job-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(90deg, #60a5fa 0%, #fbc2eb 100%);
+      color: #2563eb;
+      box-shadow: 0 2px 8px #60a5fa33;
+    }
+    .search-bar {
+      background: rgba(255,255,255,0.7);
+      border-radius: 9999px;
+      box-shadow: 0 2px 12px #60a5fa22;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid #c2e9fb;
+      outline: none;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto 2rem auto;
+      font-size: 1.1rem;
+      transition: box-shadow 0.2s;
+    }
+    .search-bar:focus {
+      box-shadow: 0 4px 24px #60a5fa55;
+      border-color: #2563eb;
+    }
+    .filter-btn {
+      background: linear-gradient(90deg, #2563eb 0%, #60a5fa 100%);
+      color: #fff;
+      border-radius: 9999px;
+      padding: 0.4rem 1.2rem;
+      font-weight: 600;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px #2563eb33;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: linear-gradient(90deg, #f472b6 0%, #2563eb 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px #f472b655;
+    }
+  </style>
+</head>
+<body>
+  <header class="flex justify-between items-center p-6 bg-white shadow-md fixed top-0 w-full z-20 border-b-4 border-blue-200">
+    <h1 class="text-2xl font-bold text-blue-600">FlyGrad</h1>
+    <nav class="space-x-6">
+      <a href="index.html" class="text-blue-600 font-semibold">Home</a>
+      <a href="about.html">About</a>
+      <a href="housing.html">Housing</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html">Login / Signup</a>
+    </nav>
+  </header>
+  <main class="pt-32 px-4">
+    <h2 class="text-4xl font-bold text-center text-blue-700 mb-4">Latest Part-Time Jobs</h2>
+    <p class="text-center text-lg text-blue-900 mb-6">Find flexible, high-paying, and interesting jobs for students abroad!</p>
+
+    <!-- Center the search bar using a flex container -->
+    <div class="flex justify-center mb-8">
+      <input type="text" id="jobSearch" class="search-bar" placeholder="Search jobs (e.g. tutor, remote, campus)..." oninput="filterJobs()" />
+    </div>
+
+    <div class="flex flex-wrap justify-center mb-8">
+      <button class="filter-btn active" onclick="filterByType('all', this)">All</button>
+      <button class="filter-btn" onclick="filterByType('remote', this)">Remote</button>
+      <button class="filter-btn" onclick="filterByType('on-campus', this)">On-Campus</button>
+      <button class="filter-btn" onclick="filterByType('creative', this)">Creative</button>
+      <button class="filter-btn" onclick="filterByType('tech', this)">Tech</button>
+    </div>
+
+    <div id="jobsGrid" class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Jobs will be injected here by JS -->
+    </div>
+  </main>
+  <script>
+    // Example jobs data
+    const jobs = [
+      {
+        title: "Campus Ambassador",
+        desc: "Promote brands on campus, organize events, and earn incentives.",
+        salary: "₹8,000/month",
+        type: "on-campus",
+        tags: ["On-Campus", "Flexible", "Marketing"]
+      },
+      {
+        title: "Online Coding Tutor",
+        desc: "Teach programming to beginners worldwide. Flexible hours, remote.",
+        salary: "₹500/hour",
+        type: "remote tech",
+        tags: ["Remote", "Tech", "Teaching"]
+      },
+      {
+        title: "Library Assistant",
+        desc: "Help manage library resources and assist students. On-campus.",
+        salary: "₹6,000/month",
+        type: "on-campus",
+        tags: ["On-Campus", "Organization"]
+      },
+      {
+        title: "Freelance Content Writer",
+        desc: "Write articles and blogs for international clients. Remote, flexible.",
+        salary: "₹400/article",
+        type: "remote creative",
+        tags: ["Remote", "Creative", "Writing"]
+      },
+      {
+        title: "Student Tour Guide",
+        desc: "Guide new students around campus and city. Part-time, fun role!",
+        salary: "₹300/hour",
+        type: "on-campus",
+        tags: ["On-Campus", "Flexible", "Communication"]
+      },
+      {
+        title: "Social Media Manager",
+        desc: "Manage social media for local businesses. Remote/On-site.",
+        salary: "₹7,000/month",
+        type: "remote creative",
+        tags: ["Remote", "Creative", "Marketing"]
+      },
+      {
+        title: "Research Assistant",
+        desc: "Assist professors with academic research, data collection, and analysis.",
+        salary: "₹9,000/month",
+        type: "on-campus tech",
+        tags: ["On-Campus", "Tech", "Research"]
+      },
+      {
+        title: "English Tutor",
+        desc: "Teach English to non-native speakers via online platforms.",
+        salary: "₹600/hour",
+        type: "remote",
+        tags: ["Remote", "Teaching"]
+      },
+      {
+        title: "Graphic Designer",
+        desc: "Design posters, flyers, and social media posts for student clubs.",
+        salary: "₹500/design",
+        type: "creative",
+        tags: ["Creative", "Design", "Flexible"]
+      },
+      {
+        title: "Food Delivery Driver",
+        desc: "Deliver food in your local area with flexible hours.",
+        salary: "₹5,000-₹12,000/month",
+        type: "on-campus",
+        tags: ["On-Campus", "Flexible", "Driving"]
+      }
+    ];
+
+    function renderJobs(filteredJobs) {
+      const jobsGrid = document.getElementById('jobsGrid');
+      jobsGrid.innerHTML = '';
+      if (filteredJobs.length === 0) {
+        jobsGrid.innerHTML = `<div class="col-span-2 text-center text-red-500 text-xl font-semibold">No jobs found.</div>`;
+        return;
+      }
+      filteredJobs.forEach(job => {
+        jobsGrid.innerHTML += `
+          <div class="glass-card p-6">
+            <h3 class="text-xl font-semibold text-blue-600 mb-2">${job.title}</h3>
+            <div class="mb-2">
+              ${job.tags.map(tag => `<span class="job-badge">${tag}</span>`).join(' ')}
+            </div>
+            <p class="mb-2">${job.desc}</p>
+            <span class="text-green-600 font-bold">${job.salary}</span>
+          </div>
+        `;
+      });
+    }
+
+    function filterJobs() {
+      const search = document.getElementById('jobSearch').value.toLowerCase();
+      const activeType = document.querySelector('.filter-btn.active').dataset.type || 'all';
+      let filtered = jobs.filter(job =>
+        job.title.toLowerCase().includes(search) ||
+        job.desc.toLowerCase().includes(search) ||
+        job.tags.some(tag => tag.toLowerCase().includes(search))
+      );
+      if (activeType !== 'all') {
+        filtered = filtered.filter(job => job.type.includes(activeType));
+      }
+      renderJobs(filtered);
+    }
+
+    function filterByType(type, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      btn.dataset.type = type;
+      filterJobs();
+    }
+
+    // Initial render
+    document.addEventListener('DOMContentLoaded', () => {
+      renderJobs(jobs);
+    });
+  </script>
+</body>
+</html>

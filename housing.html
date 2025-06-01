@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Housing Options - FlyGrad</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .glass-card {
+      background: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 2px solid rgba(80, 150, 255, 0.25);
+      transition: box-shadow 0.3s, border-color 0.3s;
+    }
+    .glass-card:hover {
+      box-shadow: 0 16px 40px 0 rgba(31, 38, 135, 0.35);
+      border-color: #2563eb;
+    }
+    .housing-illustration {
+      animation: float 3s ease-in-out infinite;
+      max-width: 350px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0);}
+      50% { transform: translateY(-16px);}
+    }
+    .header-glow {
+      box-shadow: 0 0 24px 0 #60a5fa55, 0 4px 24px 0 #f472b655;
+      transition: box-shadow 0.3s;
+    }
+    .header-glow:hover {
+      box-shadow: 0 0 48px 0 #2563eb99, 0 8px 48px 0 #f472b6aa;
+    }
+    .drop-shadow-glow {
+      filter: drop-shadow(0 0 8px #60a5fa) drop-shadow(0 0 16px #f472b6);
+    }
+    .animate-gradient {
+      background-size: 200% 200%;
+      animation: gradientMove 3s linear infinite;
+    }
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+    .nav-link {
+      position: relative;
+      font-weight: 600;
+      color: #2563eb;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      background: linear-gradient(90deg, #fff 60%, #fbc2eb22 100%);
+    }
+    .nav-link:hover, .nav-link:focus {
+      color: #fff;
+      background: linear-gradient(90deg, #2563eb 0%, #f472b6 100%);
+      box-shadow: 0 0 12px #60a5fa, 0 0 24px #f472b6;
+      outline: none;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-r from-blue-200 to-pink-100">
+
+  <!-- Enhanced Header Section -->
+  <header class="flex justify-between items-center p-6 bg-white shadow-md fixed top-0 w-full z-20 border-b-4 border-blue-200 header-glow">
+    <div class="flex items-center gap-3">
+      <span class="animate-pulse text-blue-500 text-3xl drop-shadow-glow">🏠</span>
+      <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-pink-500 to-yellow-400 drop-shadow-glow tracking-wide animate-gradient">
+        FlyGrad
+      </h1>
+    </div>
+    <nav class="space-x-6">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="housing.html" class="nav-link font-bold bg-blue-100">Housing</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+      <a href="login.html" class="nav-link">Login / Signup</a>
+    </nav>
+  </header>
+
+  <!-- Housing Section -->
+  <section class="py-32 px-4 flex flex-col md:flex-row items-center justify-center gap-12">
+    <!-- AI-generated Illustration -->
+    <div class="flex-shrink-0 mb-8 md:mb-0">
+      <img src="https://img.icons8.com/clouds/400/000000/home-page.png" alt="Housing Illustration" class="housing-illustration shadow-xl">
+    </div>
+    <!-- Map and Info -->
+    <div class="flex-1 w-full">
+      <h2 class="text-4xl font-semibold text-blue-600 mb-4">Available Housing Options</h2>
+      <div class="glass-card mt-6 w-full h-96 flex items-center justify-center overflow-hidden">
+        <!-- Embed Google Map here -->
+        <iframe src="https://www.google.com/maps/embed?..." width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+      <p class="mt-6 text-lg text-gray-700 max-w-xl mx-auto">
+        Browse our curated list of student-friendly housing options near your university. All listings are verified for safety and comfort. Find your perfect home away from home with FlyGrad!
+      </p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-blue-800 text-white text-center py-6">
+    <p>FlyGrad &copy; 2025 | Contact: support@flygrad.com</p>
+  </footer>
+</body>
+</html>

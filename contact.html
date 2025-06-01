@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - FlyGrad</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      background: linear-gradient(-45deg, #a1c4fd, #c2e9fb, #fbc2eb, #fcb69f, #f9ea8f, #b5fffc);
+      background-size: 400% 400%;
+      animation: vibrantBG 18s ease-in-out infinite;
+      min-height: 100vh;
+    }
+    @keyframes vibrantBG {
+      0% {background-position: 0% 50%;}
+      25% {background-position: 50% 100%;}
+      50% {background-position: 100% 50%;}
+      75% {background-position: 50% 0%;}
+      100% {background-position: 0% 50%;}
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 20px;
+      border: 2px solid rgba(80, 150, 255, 0.25);
+      transition: box-shadow 0.3s, border-color 0.3s;
+    }
+    .glass-card:hover {
+      box-shadow: 0 16px 40px 0 rgba(31, 38, 135, 0.35);
+      border-color: #2563eb;
+    }
+    .contact-illustration {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0);}
+      50% { transform: translateY(-12px);}
+    }
+    .submit-btn {
+      background: linear-gradient(90deg, #2563eb 0%, #60a5fa 100%);
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(96, 165, 250, 0.2);
+    }
+    .submit-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 32px rgba(37, 99, 235, 0.25);
+    }
+    /* Enhanced Header Section */
+    .header-glow {
+      box-shadow: 0 0 24px 0 #60a5fa55, 0 4px 24px 0 #f472b655;
+      transition: box-shadow 0.3s;
+    }
+    .header-glow:hover {
+      box-shadow: 0 0 48px 0 #2563eb99, 0 8px 48px 0 #f472b6aa;
+    }
+    .drop-shadow-glow {
+      filter: drop-shadow(0 0 8px #60a5fa) drop-shadow(0 0 16px #f472b6);
+    }
+    .animate-gradient {
+      background-size: 200% 200%;
+      animation: gradientMove 3s linear infinite;
+    }
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+    .nav-link {
+      position: relative;
+      font-weight: 600;
+      color: #2563eb;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      background: linear-gradient(90deg, #fff 60%, #fbc2eb22 100%);
+    }
+    .nav-link:hover, .nav-link:focus {
+      color: #fff;
+      background: linear-gradient(90deg, #2563eb 0%, #f472b6 100%);
+      box-shadow: 0 0 12px #60a5fa, 0 0 24px #f472b6;
+      outline: none;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-r from-blue-200 to-pink-100 min-h-screen">
+
+  <!-- Header -->
+  <header class="flex justify-between items-center p-6 bg-white shadow-md fixed top-0 w-full z-20 border-b-4 border-blue-200 header-glow">
+    <div class="flex items-center gap-3">
+      <span class="animate-pulse text-blue-500 text-3xl drop-shadow-glow">🎓</span>
+      <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-pink-500 to-yellow-400 drop-shadow-glow tracking-wide animate-gradient">
+        FlyGrad
+      </h1>
+    </div>
+    <nav class="space-x-6">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="housing.html" class="nav-link">Housing</a>
+      <a href="contact.html" class="nav-link font-bold bg-blue-100">Contact</a>
+      <a href="login.html" class="nav-link">Login / Signup</a>
+    </nav>
+  </header>
+
+  <!-- Contact Form Section -->
+  <section class="py-32 px-4 flex flex-col items-center justify-center min-h-screen">
+    <img src="https://img.icons8.com/clouds/200/000000/contact-card.png" alt="Contact Illustration" class="contact-illustration mb-6 mx-auto">
+    <div class="glass-card max-w-lg w-full mx-auto p-8 shadow-xl border-2 border-blue-200">
+      <h2 class="text-4xl font-semibold text-blue-600 mb-2">Contact Us</h2>
+      <p class="text-gray-700 mb-6">We'd love to hear from you! Fill out the form below and our team will get back to you soon.</p>
+      <form class="space-y-5" action="#">
+        <input type="text" placeholder="Your Name" class="w-full p-4 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none transition">
+        <input type="email" placeholder="Your Email" class="w-full p-4 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none transition">
+        <textarea rows="4" placeholder="Your Message" class="w-full p-4 rounded-lg border border-blue-200 focus:ring-2 focus:ring-blue-400 focus:outline-none transition"></textarea>
+        <button type="submit" class="submit-btn w-full py-3 text-white rounded-lg font-semibold text-lg shadow-md">Send Message</button>
+      </form>
+      <div class="mt-6 text-blue-700">
+        <p><strong>Email:</strong> support@flygrad.com</p>
+        <p><strong>Phone:</strong> +91 73370 70914</p>
+        <p class="mt-2 text-gray-500 text-sm">Our team is available 24/7 for your queries!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-blue-800 text-white text-center py-6">
+    <p>FlyGrad &copy; 2025 | Contact: support@flygrad.com</p>
+  </footer>
+</body>
+</html>

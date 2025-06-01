@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FlyGrad - Empowering Students Abroad</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css">
+  
+  <style>
+    /* Vibrant animated gradient background for all pages */
+    body {
+      background: linear-gradient(-45deg, #a1c4fd, #c2e9fb, #fbc2eb, #fcb69f, #f9ea8f, #b5fffc);
+      background-size: 400% 400%;
+      animation: vibrantBG 18s ease-in-out infinite;
+      min-height: 100vh;
+    }
+    @keyframes vibrantBG {
+      0% {background-position: 0% 50%;}
+      25% {background-position: 50% 100%;}
+      50% {background-position: 100% 50%;}
+      75% {background-position: 50% 0%;}
+      100% {background-position: 0% 50%;}
+    }
+    .speak-button {
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+    .speak-button:hover {
+      transform: scale(1.1);
+    }
+    .speak-button:active {
+      transform: scale(1);
+    }
+    .loading-indicator {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 20px;
+      color: #fff;
+    }
+    .video-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 20px;
+    }
+    video {
+      width: 100%;
+      max-width: 500px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+    }
+    .glow-btn {
+      box-shadow: 0 0 8px #60a5fa, 0 0 16px #60a5fa;
+      animation: glow 1.5s infinite alternate;
+    }
+    @keyframes glow {
+      from { box-shadow: 0 0 8px #60a5fa, 0 0 16px #60a5fa; }
+      to { box-shadow: 0 0 24px #2563eb, 0 0 48px #2563eb; }
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .glass-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 16px 40px 0 rgba(31, 38, 135, 0.37);
+    }
+    .hero-half-bg {
+      position: relative;
+      overflow: hidden;
+      min-height: 450px;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+    .hero-img-half {
+      width: 50%;
+      min-height: 450px;
+      background: url('https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=800&q=80') center center/cover no-repeat;
+    }
+    .hero-img-half.right {
+      background: url('https://images.unsplash.com/photo-1517520287167-4bbf64a00d66?auto=format&fit=crop&w=800&q=80') center center/cover no-repeat;
+    }
+    .hero-content {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .marquee {
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      box-sizing: border-box;
+      margin-bottom: 1.5rem;
+    }
+    .marquee span {
+      display: inline-block;
+      padding-left: 100%;
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 2px 8px #2563eb99;
+      animation: marquee-scroll 10s linear infinite;
+    }
+    @keyframes marquee-scroll {
+      0% { transform: translateX(0);}
+      100% { transform: translateX(-100%);}
+    }
+    @media (max-width: 900px) {
+      .hero-half-bg, .hero-img-half, .hero-img-half.right {
+        display: none;
+      }
+      .hero-content {
+        position: static;
+        background: linear-gradient(120deg, #a1c4fd 0%, #fbc2eb 100%);
+        padding: 3rem 1rem;
+        border-radius: 1.5rem;
+        margin: 2rem 0;
+        pointer-events: auto;
+      }
+    }
+
+    /* Enhanced Header Styles */
+    .header-glow {
+      box-shadow: 0 0 24px 0 #60a5fa55, 0 4px 24px 0 #f472b655;
+      transition: box-shadow 0.3s;
+    }
+    .header-glow:hover {
+      box-shadow: 0 0 48px 0 #2563eb99, 0 8px 48px 0 #f472b6aa;
+    }
+    .drop-shadow-glow {
+      filter: drop-shadow(0 0 8px #60a5fa) drop-shadow(0 0 16px #f472b6);
+    }
+    .animate-gradient {
+      background-size: 200% 200%;
+      animation: gradientMove 3s linear infinite;
+    }
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+    .nav-link {
+      position: relative;
+      font-weight: 600;
+      color: #2563eb;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      background: linear-gradient(90deg, #fff 60%, #fbc2eb22 100%);
+    }
+    .nav-link:hover, .nav-link:focus {
+      color: #fff;
+      background: linear-gradient(90deg, #2563eb 0%, #f472b6 100%);
+      box-shadow: 0 0 12px #60a5fa, 0 0 24px #f472b6;
+      outline: none;
+    }
+  </style>
+</head>
+<body class="font-sans">
+
+  <!-- Enhanced Header Section -->
+  <header class="flex justify-between items-center p-6 bg-white shadow-md fixed top-0 w-full z-20 border-b-4 border-blue-200 header-glow">
+    <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='index.html'">
+      <span class="animate-pulse text-blue-500 text-3xl drop-shadow-glow">🎓</span>
+      <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-pink-500 to-yellow-400 drop-shadow-glow tracking-wide animate-gradient">
+        FlyGrad
+      </h1>
+    </div>
+    <nav class="space-x-6">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="housing.html" class="nav-link">Housing</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+      <a href="login.html" class="nav-link">Login / Signup</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-half-bg relative">
+    <div class="hero-img-half"></div>
+    <div class="hero-img-half right"></div>
+    <div class="hero-content text-center">
+      <h2 id="typingText" class="text-4xl font-semibold text-white drop-shadow-lg mb-4"></h2>
+      <p class="text-2xl text-blue-100 font-bold mb-8" style="pointer-events:auto;">
+        Your Bridge to Global Success
+      </p>
+      <!-- Enhanced Voice Button -->
+      <button onclick="speakDescription()" class="speak-button glow-btn mt-2 px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none shadow-lg relative" style="pointer-events:auto;">
+        How to Use Our Website
+        <div class="loading-indicator" id="loadingIndicator">🔊</div>
+      </button>
+      <!-- Video Call Button -->
+      <button onclick="startVideoCall()" class="glow-btn mt-4 px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none shadow-lg" style="pointer-events:auto;">
+        Start Video Call
+      </button>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="py-12 px-6 bg-white text-center">
+    <h3 class="text-3xl font-semibold text-blue-700 mb-4">About FlyGrad</h3>
+    <p class="text-lg text-gray-700 mb-6 max-w-3xl mx-auto">
+      FlyGrad is a platform designed to empower students studying abroad by providing them with tools to find housing, study resources, and part-time job opportunities. We understand the challenges students face when adjusting to life in a new country, and our mission is to make that transition as smooth as possible. 
+      Whether you need a place to stay, resources for your studies, or a part-time job to support your lifestyle, FlyGrad is here to support you every step of the way. Our platform is user-friendly, and we strive to provide relevant information tailored to your needs as a student abroad.
+    </p>
+    <p class="text-lg text-gray-700 max-w-3xl mx-auto">
+      Start exploring the available options today and make your international student experience more successful with FlyGrad.
+    </p>
+  </section>
+
+  <!-- Features Tabs Section -->
+  <section class="py-12 px-6">
+    <div class="max-w-4xl mx-auto">
+      <!-- Tab Buttons -->
+      <div class="flex justify-center mb-8 space-x-4">
+        <button class="feature-tab-btn px-6 py-2 rounded-lg font-semibold bg-blue-600 text-white shadow hover:bg-blue-700 focus:outline-none" onclick="showFeatureTab('opportunities')">Find Opportunities</button>
+        <button class="feature-tab-btn px-6 py-2 rounded-lg font-semibold bg-pink-500 text-white shadow hover:bg-pink-600 focus:outline-none" onclick="showFeatureTab('resources')">Study Resources</button>
+        <button class="feature-tab-btn px-6 py-2 rounded-lg font-semibold bg-yellow-400 text-gray-900 shadow hover:bg-yellow-500 focus:outline-none" onclick="showFeatureTab('housing')">Find Housing</button>
+      </div>
+      <!-- Tab Contents -->
+      <div id="feature-opportunities" class="feature-tab-content glass-card p-8">
+        <h4 class="text-2xl font-bold text-blue-700 mb-4">Find Opportunities</h4>
+        <img src="https://img.icons8.com/ios-filled/100/search--v1.png" alt="Opportunities" class="mx-auto mb-4">
+        <p class="text-gray-700 mb-2">
+          Discover a wide range of opportunities including internships, scholarships, and networking events tailored for international students. Our curated list helps you connect with organizations and programs that support your academic and professional growth abroad.
+        </p>
+        <ul class="list-disc list-inside text-left text-blue-700">
+          <li>Internship listings in top companies</li>
+          <li>Scholarship search and application tips</li>
+          <li>Student networking events and webinars</li>
+          <li>Career counseling and mentorship programs</li>
+        </ul>
+      </div>
+      <div id="feature-resources" class="feature-tab-content glass-card p-8 hidden">
+        <h4 class="text-2xl font-bold text-pink-600 mb-4">Study Resources</h4>
+        <img src="https://img.icons8.com/ios-filled/100/book.png" alt="Study Resources" class="mx-auto mb-4">
+        <p class="text-gray-700 mb-2">
+          Access a comprehensive library of study materials, guides, and tools to help you excel in your courses. From e-books and lecture notes to exam preparation resources, FlyGrad supports your academic journey every step of the way.
+        </p>
+        <ul class="list-disc list-inside text-left text-pink-600">
+          <li>Downloadable e-books and lecture notes</li>
+          <li>Exam preparation guides and sample papers</li>
+          <li>Online study groups and discussion forums</li>
+          <li>Productivity and time management tools</li>
+        </ul>
+      </div>
+      <div id="feature-housing" class="feature-tab-content glass-card p-8 hidden">
+        <h4 class="text-2xl font-bold text-yellow-600 mb-4">Find Housing</h4>
+        <img src="https://img.icons8.com/ios-filled/100/home.png" alt="Find Housing" class="mx-auto mb-4">
+        <p class="text-gray-700 mb-2">
+          Browse verified housing options near your university or in your city. Whether you’re looking for student dorms, shared apartments, or private rentals, FlyGrad makes it easy to find safe and affordable accommodation abroad.
+        </p>
+        <ul class="list-disc list-inside text-left text-yellow-600">
+          <li>Search and filter housing listings</li>
+          <li>Contact landlords and schedule viewings</li>
+          <li>Read reviews from other students</li>
+          <li>Guides on rental agreements and tenant rights</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <script>
+    // Tab switching logic
+    function showFeatureTab(tab) {
+      const tabs = ['opportunities', 'resources', 'housing'];
+      tabs.forEach(t => {
+        document.getElementById('feature-' + t).classList.add('hidden');
+      });
+      document.getElementById('feature-' + tab).classList.remove('hidden');
+      // Optional: visually highlight the active tab button
+      document.querySelectorAll('.feature-tab-btn').forEach((btn, idx) => {
+        btn.classList.remove('ring', 'ring-offset-2', 'ring-blue-400', 'ring-pink-300', 'ring-yellow-300');
+        if (tabs[idx] === tab) {
+          if (tab === 'opportunities') btn.classList.add('ring', 'ring-offset-2', 'ring-blue-400');
+          if (tab === 'resources') btn.classList.add('ring', 'ring-offset-2', 'ring-pink-300');
+          if (tab === 'housing') btn.classList.add('ring', 'ring-offset-2', 'ring-yellow-300');
+        }
+      });
+    }
+    // Set default tab on load
+    document.addEventListener('DOMContentLoaded', function() {
+      showFeatureTab('opportunities');
+    });
+  </script>
+
+  <!-- Enhanced University Search Section -->
+  <section class="relative py-16 px-6 text-center bg-gradient-to-br from-blue-50 via-pink-50 to-yellow-50 overflow-hidden">
+    <!-- Floating marketing icons (added more for attraction) -->
+    <img src="https://img.icons8.com/ios-filled/50/60a5fa/graduation-cap.png" class="absolute left-10 top-10 animate-float-slow opacity-30" style="width:48px;">
+    <img src="https://img.icons8.com/ios-filled/50/f472b6/open-book--v1.png" class="absolute right-16 top-24 animate-float opacity-20" style="width:40px;">
+    <img src="https://img.icons8.com/ios-filled/50/fcb69f/globe--v1.png" class="absolute left-1/2 bottom-8 animate-float-fast opacity-20" style="width:56px;">
+    <img src="https://img.icons8.com/ios-filled/50/ffd700/trophy.png" class="absolute left-24 bottom-24 animate-float opacity-20" style="width:44px;">
+    <img src="https://img.icons8.com/ios-filled/50/34d399/brain.png" class="absolute right-10 bottom-10 animate-float-slow opacity-20" style="width:48px;">
+    <img src="https://img.icons8.com/ios-filled/50/ffb347/idea.png" class="absolute left-1/4 top-1/2 animate-float-fast opacity-20" style="width:40px;">
+    <img src="https://img.icons8.com/ios-filled/50/60a5fa/online-support.png" class="absolute right-1/4 top-1/3 animate-float opacity-20" style="width:44px;">
+    <img src="https://img.icons8.com/ios-filled/50/ff69b4/handshake.png" class="absolute left-1/3 bottom-1/4 animate-float-slow opacity-20" style="width:44px;">
+    <img src="https://img.icons8.com/ios-filled/50/4ade80/rocket--v1.png" class="absolute right-1/3 bottom-1/4 animate-float-fast opacity-20" style="width:44px;">
+    <h3 class="text-3xl font-bold mb-6 text-blue-700 drop-shadow-glow">Search Top Universities</h3>
+    <div class="relative max-w-xl mx-auto mb-8">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Type a university name..."
+        class="w-full p-3 border-2 border-blue-200 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-400 transition text-lg"
+        oninput="enhancedFilterUniversities()"
+        onfocus="showUniversitySuggestions()"
+        autocomplete="off"
+      >
+      <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-blue-400 text-xl pointer-events-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+        </svg>
+      </span>
+      <div id="universitySuggestions" class="absolute left-0 right-0 mt-2 bg-white bg-opacity-95 rounded-xl shadow-lg z-20 border border-blue-100 hidden max-h-64 overflow-y-auto text-left">
+        <!-- Suggestions will be injected here -->
+      </div>
+    </div>
+    <div id="universityResults" class="max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Results will be injected here -->
+    </div>
+  </section>
+
+  <!-- Video Call Section (Advanced) -->
+  <section id="videoCallSection" class="video-container hidden relative py-16 px-6 bg-gradient-to-br from-blue-100 via-pink-100 to-yellow-100 rounded-2xl shadow-xl my-12 mx-auto max-w-3xl">
+    <img src="https://img.icons8.com/ios-filled/50/60a5fa/video-call.png" class="absolute left-8 top-8 animate-float opacity-20" style="width:44px;">
+    <img src="https://img.icons8.com/ios-filled/50/f472b6/phone.png" class="absolute right-8 bottom-8 animate-float-slow opacity-20" style="width:44px;">
+    <h3 class="text-2xl font-semibold mb-6 text-blue-700">Video Call in Progress</h3>
+    <div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+      <div class="w-full">
+        <video id="localVideo" autoplay muted class="rounded-xl border-4 border-blue-200 shadow-lg"></video>
+        <p class="text-blue-500 text-sm mt-2">You</p>
+      </div>
+      <div class="w-full">
+        <video id="remoteVideo" autoplay class="rounded-xl border-4 border-pink-200 shadow-lg"></video>
+        <p class="text-pink-500 text-sm mt-2">Remote</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Part-Time Jobs Section (Advanced) -->
+  <section class="relative py-16 px-6 bg-gradient-to-br from-white via-blue-50 to-pink-50 text-center overflow-hidden">
+    <!-- Floating marketing icons -->
+    <img src="https://img.icons8.com/ios-filled/50/60a5fa/briefcase.png" class="absolute left-10 bottom-10 animate-float opacity-20" style="width:48px;">
+    <img src="https://img.icons8.com/ios-filled/50/f472b6/money-bag.png" class="absolute right-16 top-10 animate-float-fast opacity-20" style="width:40px;">
+    <img src="https://img.icons8.com/ios-filled/50/fcb69f/idea.png" class="absolute left-1/2 top-1/3 animate-float-slow opacity-20" style="width:56px;">
+    <h3 class="text-3xl font-semibold text-blue-700 mb-4 drop-shadow-glow">Part-Time Job Opportunities</h3>
+    <p class="text-lg text-gray-700 mb-6 max-w-3xl mx-auto">
+      Looking for part-time jobs while studying abroad? We've got you covered! Browse through a variety of part-time job opportunities that fit your schedule and skills. Whether you're looking for something remote or on-site, you’ll find the right fit to support your lifestyle abroad.
+    </p>
+    <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+      <div class="glass-card p-6 flex flex-col gap-2">
+        <span class="badge bg-blue-100 text-blue-700 w-max mb-2">Remote</span>
+        <h4 class="text-xl font-semibold text-blue-600">Marketing Assistant</h4>
+        <p class="text-gray-600">A flexible position for students interested in digital marketing and social media management. 10-15 hours a week.</p>
+      </div>
+      <div class="glass-card p-6 flex flex-col gap-2">
+        <span class="badge bg-pink-100 text-pink-700 w-max mb-2">Part-Time</span>
+        <h4 class="text-xl font-semibold text-blue-600">Customer Support Representative</h4>
+        <p class="text-gray-600">Join a growing e-commerce company and help manage customer inquiries via chat and email. 15-20 hours a week.</p>
+      </div>
+      <div class="glass-card p-6 flex flex-col gap-2">
+        <span class="badge bg-yellow-100 text-yellow-700 w-max mb-2">On-Campus</span>
+        <h4 class="text-xl font-semibold text-blue-600">Research Assistant</h4>
+        <p class="text-gray-600">Assist professors with academic research, data collection, and analysis. Flexible hours based on your availability.</p>
+      </div>
+      <div class="glass-card p-6 flex flex-col gap-2">
+        <span class="badge bg-green-100 text-green-700 w-max mb-2">Remote</span>
+        <h4 class="text-xl font-semibold text-blue-600">English Tutor</h4>
+        <p class="text-gray-600">Teach English to non-native speakers via online platforms. Set your own schedule and earn money teaching from home.</p>
+      </div>
+      <div class="glass-card p-6 flex flex-col gap-2">
+        <span class="badge bg-orange-100 text-orange-700 w-max mb-2">Flexible</span>
+        <h4 class="text-xl font-semibold text-blue-600">Food Delivery Driver</h4>
+        <p class="text-gray-600">Deliver food in your local area with flexible hours. A great option for students looking to earn extra income while staying active.</p>
+      </div>
+    </div>
+    <button onclick="window.location.href='part-time-jobs.html'" class="mt-8 px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none shadow-lg">
+      Explore More Part-Time Jobs
+    </button>
+  </section>
+
+  <!-- Placement Package Section -->
+  <section class="py-12 px-6 bg-gray-100 text-center">
+    <h3 class="text-3xl font-semibold text-blue-700 mb-4">Placement Packages</h3>
+    <p class="text-lg text-gray-700 mb-6 max-w-3xl mx-auto">
+      At FlyGrad, we understand that securing a job is a crucial part of your student journey. That's why we offer placement packages that connect you with top employers in your field. Whether you're looking for internships or full-time positions, our placement packages provide you with resources, training, and opportunities to start your career abroad.
+    </p>
+    <div class="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-3 gap-12 text-center">
+      <div class="placement-package glass-card p-6">
+        <img src="https://img.icons8.com/ios-filled/100/monitor--v1.png" alt="Placement 1" class="mx-auto">
+        <h4 class="text-xl font-semibold text-blue-600 mt-4">Tech Industry Package</h4>
+        <p class="text-gray-600">Gain access to top tech companies with tailored workshops and job search assistance.</p>
+      </div>
+      <div class="placement-package glass-card p-6">
+        <img src="https://img.icons8.com/ios-filled/100/internship.png" alt="Placement 2" class="mx-auto">
+        <h4 class="text-xl font-semibold text-blue-600 mt-4">Marketing & Business Package</h4>
+        <p class="text-gray-600">Prepare for internships and jobs in marketing, sales, and business development.</p>
+      </div>
+      <div class="placement-package glass-card p-6">
+        <img src="https://img.icons8.com/ios-filled/100/paint-palette.png" alt="Placement 3" class="mx-auto">
+        <h4 class="text-xl font-semibold text-blue-600 mt-4">Creative Industries Package</h4>
+        <p class="text-gray-600">Kickstart your career in design, media, and other creative fields with our exclusive packages.</p>
+      </div>
+    </div>
+    <button onclick="window.location.href='placement-packages.html'" class="mt-6 px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none shadow-lg">
+      Explore Placement Packages
+    </button>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-blue-800 text-white text-center py-6">
+    <p>FlyGrad &copy; 2025 | Contact: support@flygrad.com</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    function speakDescription() {
+      const speech = new SpeechSynthesisUtterance();
+      speech.text = "Welcome to FlyGrad, your one-stop platform for empowering students abroad. On our website, you can find housing options, study resources, and part-time job opportunities. Our mission is to help you find the best accommodation, manage your study materials, and ease your life as a student overseas. Start by exploring the available housing options, access useful study resources, and stay connected with our community of students. Click on the links above to navigate through the site. Enjoy your journey!";
+      speech.lang = 'en-US';
+      speech.rate = 1;
+      speech.pitch = 1;
+
+      document.getElementById("loadingIndicator").style.display = "block";
+
+      window.speechSynthesis.speak(speech);
+      speech.onstart = function () {
+        document.getElementById("loadingIndicator").style.display = "none";
+      };
+    }
+
+    function startVideoCall() {
+      const videoCallSection = document.getElementById("videoCallSection");
+      videoCallSection.classList.remove("hidden");
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then(function (stream) {
+          document.getElementById("localVideo").srcObject = stream;
+          const peerConnection = new RTCPeerConnection();
+          peerConnection.addStream(stream);
+
+          peerConnection.createOffer().then(function (offer) {
+            return peerConnection.setLocalDescription(new RTCSessionDescription(offer));
+          }).then(function () {
+            // Handle remote video
+            peerConnection.onaddstream = function (event) {
+              document.getElementById("remoteVideo").srcObject = event.stream;
+            };
+          }).catch(function (error) {
+            console.log("Error in video call setup: ", error);
+          });
+        }).catch(function (error) {
+          console.error("Error accessing media devices.", error);
+        });
+    }
+
+    // Typing effect for hero section
+    document.addEventListener("DOMContentLoaded", function() {
+      const heroText = "Empowering Students Abroad";
+      const heroElement = document.getElementById("typingText");
+      let i = 0;
+      heroElement.textContent = "";
+      function typeWriter() {
+        if (i < heroText.length) {
+          heroElement.textContent += heroText.charAt(i);
+          i++;
+          setTimeout(typeWriter, 70);
+        }
+      }
+      typeWriter();
+    });
+
+    const universities = [
+      {
+        name: "Harvard University",
+        img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80", // Harvard Yard
+        desc: "A world-renowned Ivy League university in Cambridge, Massachusetts, known for excellence in law, business, and medicine."
+      },
+      {
+        name: "Stanford University",
+        img: "https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=600&q=80", // Stanford Main Quad
+        desc: "Located in the heart of Silicon Valley, Stanford is famous for innovation, entrepreneurship, and cutting-edge research."
+      },
+      {
+        name: "Massachusetts Institute of Technology",
+        img: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80", // MIT Dome
+        desc: "MIT leads in science, engineering, and technology, fostering a culture of invention and discovery."
+      },
+      {
+        name: "University of Oxford",
+        img: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80", // Oxford Radcliffe Camera
+        desc: "The oldest university in the English-speaking world, Oxford is known for its rich history and academic excellence."
+      },
+      {
+        name: "University of Cambridge",
+        img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80", // Cambridge King's College
+        desc: "A prestigious UK university with a tradition of excellence in science, arts, and humanities."
+      },
+      {
+        name: "University of Toronto",
+        img: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80", // UofT campus
+        desc: "Canada’s top research university, known for diversity and strong programs in medicine, engineering, and business."
+      },
+      {
+        name: "National University of Singapore",
+        img: "https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=600&q=80", // NUS campus
+        desc: "Asia’s leading university, NUS is recognized for research, innovation, and global partnerships."
+      },
+      {
+        name: "Australian National University",
+        img: "https://images.unsplash.com/photo-1463123081488-789f998ac9c4?auto=format&fit=crop&w=600&q=80", // ANU campus
+        desc: "Australia’s top university, renowned for research and a vibrant international student community."
+      },
+      {
+        name: "ETH Zurich",
+        img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80", // ETH Zurich main building
+        desc: "Switzerland’s premier university for science and technology, with a global reputation for excellence."
+      },
+      {
+        name: "University of Tokyo",
+        img: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80", // University of Tokyo Yasuda Auditorium
+        desc: "Japan’s top university, leading in research and innovation across multiple disciplines."
+      },
+      {
+        name: "Woxsen University",
+        img: "https://images.unsplash.com/photo-1503676382389-4809596d5290?auto=format&fit=crop&w=600&q=80", // Modern campus placeholder
+        desc: "Woxsen University, Hyderabad is one of India's top emerging universities, known for its world-class campus, global faculty, and innovative programs in business, technology, design, and liberal arts. The university stands out for its industry-driven curriculum, international collaborations, and a vibrant student life that fosters entrepreneurship and leadership. Woxsen’s modern infrastructure and focus on holistic development make it a top choice for ambitious students."
+      }
+    ];
+
+    function enhancedFilterUniversities() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const resultsDiv = document.getElementById('universityResults');
+      const suggestionsDiv = document.getElementById('universitySuggestions');
+      resultsDiv.innerHTML = '';
+      let filtered = universities.filter(u => u.name.toLowerCase().includes(input));
+      // Show suggestions as you type
+      if (input === '') {
+        suggestionsDiv.innerHTML = '';
+        suggestionsDiv.classList.add('hidden');
+        filtered = [];
+      } else {
+        showUniversitySuggestions();
+      }
+      if (filtered.length === 0 && input !== '') {
+        resultsDiv.innerHTML = `<div class="col-span-2 text-center text-red-500 text-lg font-semibold">No university found.</div>`;
+        return;
+      }
+      filtered.forEach(u => {
+        resultsDiv.innerHTML += `
+          <div class="glass-card p-6 flex flex-col items-center text-center">
+            <img src="${u.img}" alt="${u.name}" class="rounded-xl mb-4 shadow-lg w-full h-40 object-cover">
+            <h4 class="text-xl font-bold text-blue-700 mb-2">${u.name}</h4>
+            <p class="text-gray-700">${u.desc}</p>
+          </div>
+        `;
+      });
+    }
+
+    function showUniversitySuggestions() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const suggestionsDiv = document.getElementById('universitySuggestions');
+      let filtered = universities.filter(u => u.name.toLowerCase().includes(input));
+      // If input is empty, show all universities
+      if (input === '') filtered = universities;
+      if (filtered.length === 0) {
+        suggestionsDiv.innerHTML = '';
+        suggestionsDiv.classList.add('hidden');
+        return;
+      }
+      suggestionsDiv.innerHTML = filtered.map(u =>
+        `<div class="px-4 py-2 hover:bg-blue-50 cursor-pointer" onclick="selectUniversitySuggestion('${u.name.replace(/'/g, "\\'")}')">${u.name}</div>`
+      ).join('');
+      suggestionsDiv.classList.remove('hidden');
+    }
+
+    // When a suggestion is clicked
+    function selectUniversitySuggestion(name) {
+      document.getElementById('searchInput').value = name;
+      document.getElementById('universitySuggestions').classList.add('hidden');
+      enhancedFilterUniversities();
+    }
+
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+      const input = document.getElementById('searchInput');
+      const suggestionsDiv = document.getElementById('universitySuggestions');
+      if (!input.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+        suggestionsDiv.classList.add('hidden');
+      }
+    });
+
+    // Tab switching logic
+    function showFeatureTab(tab) {
+      const tabs = ['opportunities', 'resources', 'housing'];
+      tabs.forEach(t => {
+        document.getElementById('feature-' + t).classList.add('hidden');
+      });
+      document.getElementById('feature-' + tab).classList.remove('hidden');
+      // Optional: visually highlight the active tab button
+      document.querySelectorAll('.feature-tab-btn').forEach((btn, idx) => {
+        btn.classList.remove('ring', 'ring-offset-2', 'ring-blue-400', 'ring-pink-300', 'ring-yellow-300');
+        if (tabs[idx] === tab) {
+          if (tab === 'opportunities') btn.classList.add('ring', 'ring-offset-2', 'ring-blue-400');
+          if (tab === 'resources') btn.classList.add('ring', 'ring-offset-2', 'ring-pink-300');
+          if (tab === 'housing') btn.classList.add('ring', 'ring-offset-2', 'ring-yellow-300');
+        }
+      });
+    }
+    // Set default tab on load
+    document.addEventListener('DOMContentLoaded', function() {
+      showFeatureTab('opportunities');
+    });
+  </script>
+
+  <!-- Floating Animation CSS -->
+  <style>
+  @keyframes float {
+    0%, 100% { transform: translateY(0);}
+    50% { transform: translateY(-16px);}
+  }
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0);}
+    50% { transform: translateY(-32px);}
+  }
+  @keyframes float-fast {
+    0%, 100% { transform: translateY(0);}
+    50% { transform: translateY(-8px);}
+  }
+  .animate-float { animation: float 4s ease-in-out infinite; }
+  .animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
+  .animate-float-fast { animation: float-fast 2.5s ease-in-out infinite; }
+  .badge {
+    display: inline-block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    padding: 0.25rem 1rem;
+    margin-bottom: 0.25rem;
+    margin-right: 0.25rem;
+    box-shadow: 0 2px 8px #60a5fa33;
+  }
+  </style>
+</body>
+</html>

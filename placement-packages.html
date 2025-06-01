@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Placement Packages - FlyGrad</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background: linear-gradient(-45deg, #a1c4fd, #c2e9fb, #fbc2eb, #fcb69f, #f9ea8f, #b5fffc);
+      background-size: 400% 400%;
+      animation: vibrantBG 18s ease-in-out infinite;
+      min-height: 100vh;
+    }
+    @keyframes vibrantBG {
+      0% {background-position: 0% 50%;}
+      25% {background-position: 50% 100%;}
+      50% {background-position: 100% 50%;}
+      75% {background-position: 50% 0%;}
+      100% {background-position: 0% 50%;}
+    }
+    .glass-card {
+      background: rgba(255,255,255,0.25);
+      box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.18);
+      transition: transform 0.3s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .glass-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 16px 40px 0 rgba(31,38,135,0.37);
+      z-index: 2;
+    }
+    .badge {
+      display: inline-block;
+      background: linear-gradient(90deg, #60a5fa 0%, #fbc2eb 100%);
+      color: #2563eb;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: 9999px;
+      padding: 0.25rem 0.9rem;
+      margin-bottom: 0.5rem;
+      margin-right: 0.5rem;
+      box-shadow: 0 2px 8px #60a5fa33;
+    }
+    .search-bar {
+      background: rgba(255,255,255,0.7);
+      border-radius: 9999px;
+      box-shadow: 0 2px 12px #60a5fa22;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid #c2e9fb;
+      outline: none;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto 2rem auto;
+      font-size: 1.1rem;
+      transition: box-shadow 0.2s;
+    }
+    .search-bar:focus {
+      box-shadow: 0 4px 24px #60a5fa55;
+      border-color: #2563eb;
+    }
+    .filter-btn {
+      background: linear-gradient(90deg, #2563eb 0%, #60a5fa 100%);
+      color: #fff;
+      border-radius: 9999px;
+      padding: 0.4rem 1.2rem;
+      font-weight: 600;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px #2563eb33;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: linear-gradient(90deg, #f472b6 0%, #2563eb 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px #f472b655;
+    }
+    .price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #059669;
+      margin-bottom: 0.5rem;
+    }
+    .features-list {
+      text-align: left;
+      margin: 0 auto 1rem auto;
+      max-width: 260px;
+      color: #374151;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    .features-list li {
+      margin-bottom: 0.4rem;
+      padding-left: 1.2em;
+      position: relative;
+    }
+    .features-list li:before {
+      content: "✔";
+      color: #2563eb;
+      position: absolute;
+      left: 0;
+      font-size: 1em;
+    }
+    .popular-badge {
+      position: absolute;
+      top: 1rem;
+      right: -2.5rem;
+      background: linear-gradient(90deg, #f472b6 0%, #fbc2eb 100%);
+      color: #fff;
+      font-weight: bold;
+      font-size: 0.95rem;
+      padding: 0.3rem 2.2rem;
+      transform: rotate(20deg);
+      box-shadow: 0 2px 8px #f472b655;
+      z-index: 3;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+  <header class="flex justify-between items-center p-6 bg-white shadow-md fixed top-0 w-full z-20 border-b-4 border-blue-200">
+    <h1 class="text-2xl font-bold text-blue-600">FlyGrad</h1>
+    <nav class="space-x-6">
+      <a href="index.html" class="text-blue-600 font-semibold">Home</a>
+      <a href="about.html">About</a>
+      <a href="housing.html">Housing</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html">Login / Signup</a>
+    </nav>
+  </header>
+  <main class="pt-32 px-4">
+    <h2 class="text-4xl font-bold text-center text-blue-700 mb-4">Placement Packages</h2>
+    <p class="text-center text-lg text-blue-900 mb-6">Choose the best package for your dream career abroad. Filter by industry or search for features!</p>
+
+    <!-- Center the search bar using a flex container -->
+    <div class="flex justify-center mb-6">
+      <input type="text" id="packageSearch" class="search-bar" placeholder="Search packages (e.g. tech, resume, interview)..." oninput="filterPackages()" />
+    </div>
+
+    <div class="flex flex-wrap justify-center mb-8">
+      <button class="filter-btn active" onclick="filterByType('all', this)">All</button>
+      <button class="filter-btn" onclick="filterByType('tech', this)">Tech</button>
+      <button class="filter-btn" onclick="filterByType('business', this)">Business</button>
+      <button class="filter-btn" onclick="filterByType('creative', this)">Creative</button>
+      <button class="filter-btn" onclick="filterByType('premium', this)">Premium</button>
+    </div>
+
+    <div id="packagesGrid" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Packages will be injected here by JS -->
+    </div>
+
+    <!-- Success Stories Section -->
+    <section class="max-w-6xl mx-auto mt-16 mb-12">
+      <h3 class="text-3xl font-bold text-center text-green-700 mb-8">Success Stories</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="glass-card p-6 text-center">
+          <img src="images/WhatsApp Image 2025-05-17 at 20.53.27 (1).jpeg " alt="Student 1" class="mx-auto rounded-full w-20 h-20 mb-4 border-4 border-blue-200">
+          <h4 class="text-xl font-semibold text-blue-700 mb-1">G.Akshay Vardhan</h4>
+          <p class="text-green-600 font-bold mb-2">Placed at Google (UK)</p>
+          <p class="text-gray-700 text-sm mb-2">"FlyGrad's Tech Industry package gave me the confidence and connections to crack my dream job interview!"</p>
+          <span class="badge">Tech</span>
+          <span class="badge">Premium</span>
+        </div>
+        <div class="glass-card p-6 text-center">
+          <img src="images/WhatsApp Image 2025-05-17 at 20.53.27.jpeg " alt="Student 2" class="mx-auto rounded-full w-20 h-20 mb-4 border-4 border-pink-200">
+          <h4 class="text-xl font-semibold text-blue-700 mb-1">M Yagnesh chowan</h4>
+          <p class="text-green-600 font-bold mb-2">Placed at Deloitte (Canada)</p>
+          <p class="text-gray-700 text-sm mb-2">"The Business package helped me ace my interviews and build a strong professional network abroad."</p>
+          <span class="badge">Business</span>
+        </div>
+        <div class="glass-card p-6 text-center">
+          <img src=" images/WhatsApp Image 2025-05-17 at 21.02.06.jpeg" alt="Student 3" class="mx-auto rounded-full w-20 h-20 mb-4 border-4 border-yellow-200">
+          <h4 class="text-xl font-semibold text-blue-700 mb-1">K Abhi Ram</h4>
+          <p class="text-green-600 font-bold mb-2">Placed at Ubisoft (France)</p>
+          <p class="text-gray-700 text-sm mb-2">"The Creative Industries package and mentorship opened doors to the global gaming industry for me!"</p>
+          <span class="badge">Creative</span>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    // Example packages data (with more premium packages)
+    const packages = [
+      {
+        title: "Tech Industry",
+        desc: "Workshops, resume reviews, and direct connections to tech recruiters.",
+        price: "₹4,999",
+        type: "tech",
+        features: [
+          "Resume & LinkedIn review",
+          "Mock technical interviews",
+          "Direct recruiter connects",
+          "Job alerts for top tech firms"
+        ],
+        badges: ["Tech", "Popular"],
+        icon: "https://img.icons8.com/ios-filled/100/monitor--v1.png",
+        popular: true
+      },
+      {
+        title: "Marketing & Business",
+        desc: "Internship prep, interview training, and business networking events.",
+        price: "₹3,999",
+        type: "business",
+        features: [
+          "Business case workshops",
+          "Networking events",
+          "Interview coaching",
+          "Internship placement support"
+        ],
+        badges: ["Business"],
+        icon: "https://img.icons8.com/ios-filled/100/internship.png",
+        popular: false
+      },
+      {
+        title: "Creative Industries",
+        desc: "Portfolio reviews, creative job fairs, and mentorship from industry pros.",
+        price: "₹2,999",
+        type: "creative",
+        features: [
+          "Portfolio review",
+          "Mentorship from professionals",
+          "Creative job fairs",
+          "Resume design tips"
+        ],
+        badges: ["Creative"],
+        icon: "https://img.icons8.com/ios-filled/100/paint-palette.png",
+        popular: false
+      },
+      {
+        title: "Premium Global Career",
+        desc: "All-in-one package for ambitious students: tech, business, and creative.",
+        price: "₹7,999",
+        type: "premium",
+        features: [
+          "All features from other packages",
+          "1-on-1 career mentorship",
+          "Priority job alerts",
+          "Exclusive webinars with global leaders"
+        ],
+        badges: ["Premium", "All-in-One"],
+        icon: "https://img.icons8.com/ios-filled/100/globe--v1.png",
+        popular: true
+      },
+      {
+        title: "Finance & Consulting",
+        desc: "Ace your finance/consulting interviews and get placed in top firms.",
+        price: "₹5,499",
+        type: "business",
+        features: [
+          "Case study prep",
+          "Aptitude test training",
+          "Finance interview coaching",
+          "Consulting resume review"
+        ],
+        badges: ["Business", "Finance"],
+        icon: "https://img.icons8.com/ios-filled/100/money-bag.png",
+        popular: false
+      },
+      {
+        title: "Design & UI/UX",
+        desc: "Get your portfolio noticed and land creative roles in top companies.",
+        price: "₹3,499",
+        type: "creative",
+        features: [
+          "UI/UX portfolio review",
+          "Design thinking workshops",
+          "Mentorship from designers",
+          "Job alerts for creative roles"
+        ],
+        badges: ["Creative", "Design"],
+        icon: "https://img.icons8.com/ios-filled/100/design.png",
+        popular: false
+      },
+      // New Premium Packages
+      {
+        title: "Premium Tech Leadership",
+        desc: "Exclusive leadership training, global hackathons, and CTO mentorship.",
+        price: "₹11,999",
+        type: "premium tech",
+        features: [
+          "Leadership workshops",
+          "Global hackathon access",
+          "CTO mentorship sessions",
+          "Fast-track job referrals"
+        ],
+        badges: ["Premium", "Tech", "Leadership"],
+        icon: "https://img.icons8.com/ios-filled/100/leaderboard.png",
+        popular: true
+      },
+      {
+        title: "Premium Creative Pro",
+        desc: "Personal branding, portfolio showcase, and direct access to creative directors.",
+        price: "₹9,999",
+        type: "premium creative",
+        features: [
+          "Personal branding sessions",
+          "Portfolio showcase events",
+          "1-on-1 with creative directors",
+          "Exclusive creative job alerts"
+        ],
+        badges: ["Premium", "Creative"],
+        icon: "https://img.icons8.com/ios-filled/100/idea.png",
+        popular: true
+      }
+    ];
+
+    function renderPackages(filteredPackages) {
+      const grid = document.getElementById('packagesGrid');
+      grid.innerHTML = '';
+      if (filteredPackages.length === 0) {
+        grid.innerHTML = `<div class="col-span-3 text-center text-red-500 text-xl font-semibold">No packages found.</div>`;
+        return;
+      }
+      filteredPackages.forEach(pkg => {
+        grid.innerHTML += `
+          <div class="glass-card p-8 text-center">
+            ${pkg.popular ? `<div class="popular-badge">POPULAR</div>` : ""}
+            <img src="${pkg.icon}" class="mx-auto mb-4" alt="${pkg.title}">
+            <h3 class="text-2xl font-semibold text-blue-600 mb-2">${pkg.title}</h3>
+            <div class="mb-2">
+              ${pkg.badges.map(badge => `<span class="badge">${badge}</span>`).join(' ')}
+            </div>
+            <p class="mb-4">${pkg.desc}</p>
+            <ul class="features-list mb-4">
+              ${pkg.features.map(f => `<li>${f}</li>`).join('')}
+            </ul>
+            <div class="price mb-2">${pkg.price}</div>
+            <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">Get Started</button>
+          </div>
+        `;
+      });
+    }
+
+    function filterPackages() {
+      const search = document.getElementById('packageSearch').value.toLowerCase();
+      const activeType = document.querySelector('.filter-btn.active').dataset.type || 'all';
+      let filtered = packages.filter(pkg =>
+        pkg.title.toLowerCase().includes(search) ||
+        pkg.desc.toLowerCase().includes(search) ||
+        pkg.features.some(f => f.toLowerCase().includes(search)) ||
+        pkg.badges.some(b => b.toLowerCase().includes(search))
+      );
+      if (activeType !== 'all') {
+        filtered = filtered.filter(pkg => pkg.type.includes(activeType));
+      }
+      renderPackages(filtered);
+    }
+
+    function filterByType(type, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      btn.dataset.type = type;
+      filterPackages();
+    }
+
+    // Initial render
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPackages(packages);
+    });
+  </script>
+</body>
+</html>
